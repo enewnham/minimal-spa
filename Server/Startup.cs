@@ -40,7 +40,8 @@ public class Startup
             endpoints.MapControllers();
             endpoints.MapRazorPages();
 
-            endpoints.MapFallbackToPage(@"{**path:regex(^(?!api\b).+)}", "/");
+            endpoints.MapFallbackToPage(@"{**path:regex(^(?!api\b).+)}", "/app");
+            endpoints.MapFallbackToPage("", "/app");
         });
     }
 }

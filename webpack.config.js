@@ -8,6 +8,7 @@ module.exports = {
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "Server", "wwwroot", "dist"),
+    publicPath: "/dist/",
   },
   module: {
     rules: [

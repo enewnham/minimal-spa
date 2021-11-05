@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import { Button, Input, InputGroup } from "reactstrap";
-import { TodoItem } from "./TodoItem";
+import { TodoEntry } from "./TodoEntry";
 import { TodoStore } from "./TodoStore";
 
 const store = new TodoStore();
@@ -40,8 +40,8 @@ export const TodoList = observer(() => {
         </Button>
       </InputGroup>
       <ul>
-        {Array.from(store.items).map(([k, e]) => (
-          <TodoItem key={k} entry={e} store={store} />
+        {Array.from(store.entries).map(([k, e]) => (
+          <TodoEntry key={k} entry={e} store={store} />
         ))}
       </ul>
       <Button color="danger" onClick={store.removeCompleted}>

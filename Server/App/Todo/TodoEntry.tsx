@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { Input } from "reactstrap";
-import "./TodoItem.css";
+import "./TodoEntry.css";
 import { TodoStore } from "./TodoStore";
 
-export const TodoItem: FC<{
+export const TodoEntry: FC<{
   entry: Server.Controllers.Todo.Entry;
   store: TodoStore;
 }> = observer(({ entry, store }) => (

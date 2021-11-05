@@ -8,27 +8,42 @@ export class TodoStore {
   }
 
   async load() {
-    // TODO: issue fetch GET
-    this.entries.set(1, { id: 1, value: "First task", complete: false });
-    this.entries.set(2, { id: 2, value: "Second task", complete: false });
+    const response = await fetch("/api/todos");
+    const entries: Server.Controllers.Todo.Entry[] = await response.json();
+
+    for (const e of entries) this.entries.set(e.id, e);
   }
 
-  addTask(value: string) {
-    // TODO: issue fetch POST
-    this.entries.set(3, { id: 3, value, complete: false });
+  async addTask(value: string) {
+    const response = await fetch("/api/todos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ value }),
+    });
+    const entry: Server.Controllers.Todo.Entry = await response.json();
+
+    this.entries.set(entry.id, entry);
   }
 
-  toggleComplete(id: number) {
-    // TODO: issue fetch UPDATE
-    const task = this.entries.get(id);
-    if (task) task.complete = !task.complete;
+  async toggleComplete(id: number) {
+    const response = await fetch(`/api/todos/${id}/complete`, {
+      method: "PUT",
+    });
+    const entry: Server.Controllers.Todo.Entry = await response.json();
+
+    this.entries.set(entry.id, entry);
   }
 
-  removeCompleted() {
-    // TODO: issue fetch DELETE
-    const openItems = Array.from(this.entries)
+  async removeCompleted() {
+    const response = await fetch("/api/todos", { method: "DELETE" });
+    const entries: Server.Controllers.Todo.Entry[] = await response.json();
+    for (const e of entries) this.entries.set(e.id, e);
+
+    const complete = Array.from(this.entries)
       .map(([k, e]) => e)
       .filter((e) => e.complete);
-    for (const e of openItems) this.entries.delete(e.id);
+    for (const e of complete) this.entries.delete(e.id);
   }
 }

@@ -3,6 +3,14 @@
     "tasks": [
         {
             "label": "build",
+            "dependsOn": [
+                "dotnet: build",
+                "npm: start"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "dotnet: build",
             "command": "dotnet",
             "type": "shell",
             "args": [
@@ -15,6 +23,44 @@
                 "reveal": "silent"
             },
             "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "problemMatcher": [
+                {
+                    "owner": "typescript",
+                    "source": "ts",
+                    "applyTo": "closedDocuments",
+                    "fileLocation": "absolute",
+                    "severity": "error",
+                    "pattern": [
+                        {
+                            "regexp": "\\[tsl\\] (ERROR|WARNING) in (.*)?\\((\\d+),(\\d+)\\)",
+                            "severity": 1,
+                            "file": 2,
+                            "line": 3,
+                            "column": 4
+                        },
+                        {
+                            "regexp": "\\s*TS(\\d+):\\s*(.*)$",
+                            "code": 1,
+                            "message": 2
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": {
+                            "regexp": "Compiling.*?|Compilation .*?starting"
+                        },
+                        "endsPattern": {
+                            "regexp": "[Cc]ompiled (.*?successfully|with .*?error)|[Cc]ompilation .*?finished"
+                        }
+                    }
+                },
+            ],
+            "label": "npm: start",
+            "isBackground": true,
         }
     ]
 }

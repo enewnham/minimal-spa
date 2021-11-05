@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "formulahendry.dotnet-test-explorer",
+        "ms-dotnettools.csharp",
+        "esbenp.prettier-vscode",
+        "hbenl.vscode-test-explorer"
+    ]
+}

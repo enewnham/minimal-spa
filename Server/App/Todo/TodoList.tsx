@@ -1,28 +1,25 @@
-import { makeAutoObservable } from "mobx";
 import { observer } from "mobx-react-lite";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
+import { Button, Input, InputGroup } from "reactstrap";
 import { TodoItem } from "./TodoItem";
+import { TodoStore } from "./TodoStore";
 
-class TodoListStore {
-  items = new Map<number, Server.Controllers.Todo.Entry>();
-
-  constructor() {
-    makeAutoObservable(this, {}, { autoBind: true });
-  }
-
-  async loadAsync() {
-    // TODO: issue fetch
-    this.items.set(1, { id: 1, value: "First task" });
-    this.items.set(2, { id: 2, value: "Second task" });
-  }
-}
-
-const store = new TodoListStore();
+const store = new TodoStore();
 
 export const TodoList = observer(() => {
   useEffect(() => {
-    store.loadAsync();
-  });
+    store.load();
+  }, []);
+  const [userInput, setUserInput] = useState("");
+
+  function onInput(event: React.ChangeEvent<HTMLInputElement>) {
+    setUserInput(event.currentTarget.value);
+  }
+
+  async function onAdd() {
+    await store.addTask(userInput);
+    setUserInput("");
+  }
 
   return (
     <div>
@@ -31,11 +28,25 @@ export const TodoList = observer(() => {
         This module is fully backed by SQL and tested via end-to-end integration
         tests
       </p>
+      <InputGroup>
+        <Input
+          type="text"
+          value={userInput}
+          onChange={onInput}
+          placeholder="Enter Item..."
+        />
+        <Button color="success" onClick={onAdd}>
+          Add
+        </Button>
+      </InputGroup>
       <ul>
         {Array.from(store.items).map(([k, e]) => (
-          <TodoItem key={k} entry={e} />
+          <TodoItem key={k} entry={e} store={store} />
         ))}
       </ul>
+      <Button color="danger" onClick={store.removeCompleted}>
+        Remove Completed Tasks
+      </Button>
     </div>
   );
 });

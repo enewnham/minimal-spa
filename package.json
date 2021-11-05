@@ -4,12 +4,15 @@
   "description": "A minimal SPA for a minimal Server",
   "scripts": {
     "build": "webpack --config webpack.config.js --mode production",
+    "prestart": "node aspnetcore-https",
     "start": "webpack serve --mode development"
   },
   "author": "Elliot Newnham",
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^5.1.3",
+    "mobx": "^6.3.6",
+    "mobx-react": "^7.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-bootstrap": "^0.25.0",

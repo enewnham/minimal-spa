@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "experimentalDecorators": true,
+        "useDefineForClassFields": true,
         "strict": true,
         "sourceMap": true,
         "skipLibCheck": true,

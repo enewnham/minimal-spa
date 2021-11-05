@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { configure } from "mobx";
 import { Layout } from "./Components/Layout";
 import { Home } from "./Home/Home";
+import { TodoList } from "./Todo/TodoList";
 
 configure({ enforceActions: "never" });
 
@@ -15,6 +16,7 @@ ReactDOM.render(
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="todo" element={<TodoList />} />
       </Route>
     </Routes>
   </BrowserRouter>,

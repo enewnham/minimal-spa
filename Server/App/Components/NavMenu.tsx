@@ -35,7 +35,7 @@ export const NavMenu: FC = observer(() => (
     >
       <Container>
         <NavbarBrand tag={Link} to="/">
-          todo {state.collapsed}
+          Mini App
         </NavbarBrand>
         <NavbarToggler onClick={state.toggleNavbar} className="mr-2" />
         <Collapse
@@ -47,6 +47,11 @@ export const NavMenu: FC = observer(() => (
             <NavItem>
               <NavLink tag={Link} className="text-dark" to="/">
                 Home
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} className="text-dark" to="/todo">
+                Todo
               </NavLink>
             </NavItem>
           </ul>

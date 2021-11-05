@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "strict": true,
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "jsx": "react",
+        "target": "es2020",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+    }
+}

@@ -28,11 +28,11 @@ module.exports = (env, args) => {
 
   return {
     entry: {
-      app: path.resolve(__dirname, "Server", "App"),
+      app: path.resolve(__dirname),
     },
     output: {
       filename: "[name].js",
-      path: path.resolve(__dirname, "Server", "wwwroot", "dist"),
+      path: path.resolve(__dirname, "..", "Server", "wwwroot", "dist"),
       publicPath: "/dist/",
     },
     module: {

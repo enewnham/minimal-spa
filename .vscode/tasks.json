@@ -27,6 +27,9 @@
         {
             "type": "npm",
             "script": "start",
+            "options": {
+                "cwd": "${workspaceFolder}/Client"
+            },
             "problemMatcher": [
                 {
                     "owner": "typescript",

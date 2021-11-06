@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+using Server.Data;
 
 namespace Server.Controllers.Todo;
 
@@ -6,42 +9,50 @@ namespace Server.Controllers.Todo;
 [Route("api/todos")]
 public class TodoController : ControllerBase
 {
+    public TodoController(AppDbContext context)
+    {
+        m_Context = context;
+    }
     [HttpGet]
-    public ActionResult<List<Entry>> Get() => ms_Entries.Values.ToList();
+    public IQueryable<Entry> Get() => m_Context.TodoEntries.AsQueryable();
 
     [HttpGet("{id}")]
-    public ActionResult<Entry> Get(int id) => ms_Entries[id];
+    public ValueTask<Entry> Get(int id) => m_Context.TodoEntries.FindAsync(id);
 
     [HttpPut("{id}/complete")]
-    public ActionResult<Entry> ToggleComplete(int id)
+    public async Task<Entry> ToggleComplete(int id)
     {
-        var entry = ms_Entries[id];
+        var entry = await m_Context.TodoEntries.FindAsync(id);
         entry.Complete = !entry.Complete;
+
+        await m_Context.SaveChangesAsync();
 
         return entry;
     }
 
     [HttpPost]
-    public ActionResult<Entry> Add(Entry entry)
+    public async Task<Entry> Add(Entry entry)
     {
-        entry.Id = ms_Entries.Any() ? ms_Entries.Values.Max(e => e.Id) + 1 : 0;
         entry.Complete = false;
+        m_Context.TodoEntries.Add(entry);
 
-        ms_Entries.Add(entry.Id, entry);
+        await m_Context.SaveChangesAsync();
 
         return entry;
     }
 
     [HttpDelete]
-    public ActionResult<List<Entry>> RemoveComplete()
+    public async Task<IQueryable<Entry>> RemoveComplete()
     {
-        var complete = ms_Entries.Values.Where(e => e.Complete).ToList();
+        var complete = await m_Context.TodoEntries.Where(e => e.Complete).ToListAsync();
 
         foreach (var e in complete)
-            ms_Entries.Remove(e.Id);
+            m_Context.TodoEntries.Remove(e);
 
-        return ms_Entries.Values.ToList();
+        m_Context.SaveChanges();
+
+        return m_Context.TodoEntries.AsQueryable();
     }
 
-    private static Dictionary<int, Entry> ms_Entries = new();
+    private readonly AppDbContext m_Context;
 }

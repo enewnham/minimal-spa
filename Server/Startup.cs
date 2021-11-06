@@ -1,6 +1,9 @@
 namespace Server;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+
+using Server.Data;
 
 public class Startup
 {
@@ -18,6 +21,10 @@ public class Startup
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new() { Title = "api", Version = "v1" });
+        });
+        services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseSqlServer(@"Data Source=(LocalDb)\minimal;Initial Catalog=dbo");
         });
     }
 
